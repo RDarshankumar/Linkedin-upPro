@@ -97,7 +97,7 @@ const Navbar = ({ profileImage }) => {
             <div className="flex flex-shrink-0 items-center">
               <img
                 className="h-8 w-auto"
-                src={}/// Put the Image here Linkdin pro waly issma image dalo
+                src=""/// Put the Image here Linkdin pro waly issma image dalo
                 alt="Your Company"
                 id='logo'
               />
