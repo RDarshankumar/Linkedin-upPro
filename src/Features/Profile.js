@@ -45,19 +45,19 @@ const Profile = () => {
   };
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="container p-6 mx-auto">
       {/* Banner and Profile Image */}
       <div className="mb-4">
         <div>
           <h2 className="text-lg font-medium">Banner Image</h2>
           <input type="file" onChange={handleBannerChange} />
-          {bannerImage && <img src={bannerImage} alt="Banner" className="mt-4 w-full h-64 object-cover" />}
+          {bannerImage && <img src={bannerImage} alt="Banner" className="object-cover w-full h-64 mt-4" />}
         </div>
 
         <div className="mt-4">
           <h2 className="text-lg font-medium">Profile Image</h2>
           <input type="file" onChange={handleProfileChange} />
-          {profileImage && <img src={profileImage} alt="Profile" className="mt-4 w-24 h-24 rounded-full" />}
+          {profileImage && <img src={profileImage} alt="Profile" className="w-24 h-24 mt-4 rounded-full" />}
         </div>
       </div>
 
@@ -71,7 +71,7 @@ const Profile = () => {
             value={newEducation.university}
             onChange={handleEducationChange}
             placeholder="University Name"
-            className="block w-full p-2 border rounded mb-2"
+            className="block w-full p-2 mb-2 border rounded"
           />
           <input
             type="text"
@@ -79,7 +79,7 @@ const Profile = () => {
             value={newEducation.highSchool}
             onChange={handleEducationChange}
             placeholder="High School Name"
-            className="block w-full p-2 border rounded mb-2"
+            className="block w-full p-2 mb-2 border rounded"
           />
           <input
             type="text"
@@ -87,7 +87,7 @@ const Profile = () => {
             value={newEducation.degree}
             onChange={handleEducationChange}
             placeholder="Degree"
-            className="block w-full p-2 border rounded mb-2"
+            className="block w-full p-2 mb-2 border rounded"
           />
           <input
             type="text"
@@ -95,7 +95,7 @@ const Profile = () => {
             value={newEducation.grade}
             onChange={handleEducationChange}
             placeholder="Grade"
-            className="block w-full p-2 border rounded mb-2"
+            className="block w-full p-2 mb-2 border rounded"
           />
           <input
             type="text"
@@ -103,12 +103,12 @@ const Profile = () => {
             value={newEducation.cgpa}
             onChange={handleEducationChange}
             placeholder="CGPA"
-            className="block w-full p-2 border rounded mb-4"
+            className="block w-full p-2 mb-4 border rounded"
           />
 
           <button
             onClick={addEducation}
-            className="bg-blue-500 text-white px-4 py-2 rounded"
+            className="px-4 py-2 text-white bg-blue-500 rounded"
           >
             Add Education
           </button>
@@ -121,7 +121,7 @@ const Profile = () => {
         {educationList.map((education) => (
           <div
             key={education.id}
-            className="border p-4 rounded mb-4 flex justify-between items-center"
+            className="flex items-center justify-between p-4 mb-4 border rounded"
           >
             <div>
               <p>
@@ -144,13 +144,13 @@ const Profile = () => {
             <div>
               <button
                 onClick={() => editEducation(education.id)}
-                className="bg-yellow-500 text-white px-4 py-2 rounded mr-2"
+                className="px-4 py-2 mr-2 text-white bg-yellow-500 rounded"
               >
                 Edit
               </button>
               <button
                 onClick={() => deleteEducation(education.id)}
-                className="bg-red-500 text-white px-4 py-2 rounded"
+                className="px-4 py-2 text-white bg-red-500 rounded"
               >
                 Delete
               </button>

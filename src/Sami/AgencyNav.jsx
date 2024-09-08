@@ -1,12 +1,28 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef , useContext} from 'react';
+import ReactDOM from 'react-dom/client';
 import Logo from '../Logo/Dk.png';
-import './Nav.css';
+import '../Features/Nav.css';
 import LinkUp from '../Logo/LinkupPng.png'
+import { Link } from 'react-router-dom';
+import AgencyContext from './Data/AgencyData/AgencyContext'
 
-const Navbar = ({ profileImage }) => {
+const AgencyNav = ( {profileImage } ) => {
+
+  const {AgencyState , CurrAgency , setAgencyState, setCurrAgency} = useContext(AgencyContext);
+
+  
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [ShowProfilePage , setShowProfilePage] = useState(false)
+
   const profileRef = useRef(null);
 
+
+
+  const handleCurrAgency = () => {
+      setCurrAgency(AgencyState[AgencyState.length -1])
+  }
+  
+  console.log("curr agency hai yai " , CurrAgency)
   const toggleProfileMenu = () => {
     setIsProfileOpen(!isProfileOpen);
   };
@@ -26,69 +42,8 @@ const Navbar = ({ profileImage }) => {
   }, [profileRef]);
 
   // Function to open a new tab with profile info
-  const openProfileTab = () => {
-    const profileWindow = window.open('', '_blank');
-    if (profileWindow) {
-      profileWindow.document.write(`
-        <html>
-        <head>
-          <title>Your Profile</title>
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              text-align: center;
-              margin: 0;
-              padding: 0;
-              background-color: #f4f4f4;
-            }
-            .banner {
-              background-color: #4a90e2;
-              color: white;
-              padding: 50px;
-            }
-            .profile-img {
-              margin-top: -50px;
-              width: 150px;
-              height: 150px;
-              border-radius: 50%;
-              border: 5px solid white;
-              object-fit: cover;
-            }
-            .profile-info {
-              margin-top: 20px;
-            }
-            .back-button {
-              position: fixed;
-              top: 20px;
-              left: 20px;
-              background-color: #4a90e2;
-              color: white;
-              border: none;
-              padding: 10px 20px;
-              border-radius: 5px;
-              cursor: pointer;
-            }
-            .back-button:hover {
-              background-color: #357abd;
-            }
-          </style>
-        </head>
-        <body>
-          <button class="back-button" onclick="window.history.back()">Go Back</button>
-          <div class="banner">
-            <h1>Welcome to Your Profile</h1>
-          </div>
-          <img src="${profileImage}" alt="Profile Image" class="profile-img" />
-          <div class="profile-info">
-            <h2>User Name</h2>
-            <p>Some user information goes here...</p>
-          </div>
-        </body>
-        </html>
-      `);
-      profileWindow.document.close();
-    }
-  };
+
+
 
   return (
     <nav className="bg-gray-800">
@@ -171,7 +126,7 @@ const Navbar = ({ profileImage }) => {
                   <img
                     className="w-8 h-8 rounded-full"
                     src={profileImage}
-                    alt=""
+                    alt="Dp"
                   />
                 </button>
               </div>
@@ -185,15 +140,16 @@ const Navbar = ({ profileImage }) => {
                   aria-labelledby="user-menu-button"
                   tabIndex="-1"
                 >
-                  <button
+                  <Link
                     className="block w-full px-4 py-2 text-sm text-left text-gray-700"
                     role="menuitem"
                     tabIndex="-1"
                     id="user-menu-item-0"
-                    onClick={openProfileTab}
+                    to="/AgencyProfile"
+                    onClick={handleCurrAgency}
                   >
                     Your Profile
-                  </button>
+                  </Link>
                   <a
                     href="#"
                     className="block px-4 py-2 text-sm text-gray-700"
@@ -203,7 +159,7 @@ const Navbar = ({ profileImage }) => {
                   >
                     Settings
                   </a>
-                  <a
+                  <Link to="/"
                     href="#"
                     className="block px-4 py-2 text-sm text-gray-700"
                     role="menuitem"
@@ -211,7 +167,7 @@ const Navbar = ({ profileImage }) => {
                     id="user-menu-item-2"
                   >
                     Sign out
-                  </a>
+                  </Link>
                 </div>
               )}
             </div>
@@ -222,4 +178,4 @@ const Navbar = ({ profileImage }) => {
   );
 };
 
-export default Navbar;
+export default AgencyNav;
