@@ -1,10 +1,17 @@
-import React, { useState } from 'react'
+import React, { useContext, useState , useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { AgencyState } from './Data/AgencyState'
-
 import Loading from './Assets/Loading'
+import AgencyPage from '../Sami/AgencyPage'
+import AgencyNav from './AgencyNav'
+import AgencyContext from './Data/AgencyData/AgencyContext'
 
 const AgencyForm = () => {
+
+    const {AgencyState , CurrAgency , setAgencyState, setCurrAgency} = useContext(AgencyContext);
+
+    useEffect(()=> {
+      console.log("object" , AgencyState)
+    }, [AgencyState])
 
 
     const [name , setName] = useState("")
@@ -17,26 +24,36 @@ const AgencyForm = () => {
     const [fb , setFb] = useState("")
     const [insta , setInsta] = useState("")
     const [profileImage, setProfileImage] = useState(null);
+    const [bannerImage , setBannerImage] = useState(null)
     const [step , setStep] = useState(1)
     const [loading , setLoading ] = useState(false)
-    const[isFormOpen , setFormOpen] = useState(true)
+    const [isFormOpen , setFormOpen] = useState(true)
     const [profileShow , setProfileShow] = useState(false)
 
     
 
     const handleNext = () => {
       setStep((prevStep) => prevStep + 1)
-      console.log(name , email , country , Date)
     };
     const handlePrev = () => setStep((prevStep) => prevStep - 1);
 
-    const handleImageChange = (e) => {
+    const handleProfileImageChange = (e) => {
+          console.log(e.target.files)
         const file = e.target.files[0];
         if (file) {
           setProfileImage(URL.createObjectURL(file));
         }
         console.log(profileImage)
     }
+
+    const handleBannerImageChange = (e) => {
+      console.log(e.target.files)
+    const file = e.target.files[0];
+    if (file) {
+      setBannerImage(URL.createObjectURL(file));
+    }
+    console.log(profileImage)
+}
 
     const handleEntry = () => {
 
@@ -54,16 +71,15 @@ const AgencyForm = () => {
         Web : web,
         Fb : fb,
         Insta : insta ,
-        Pic : profileImage
+        Pic : profileImage,
+        Banner : bannerImage,
       }
 
       AgencyState.push(newAgency)
 
-      console.log(AgencyState)
-
       console.log(AgencyState[AgencyState.length - 1]);
 
-
+      setCurrAgency(newAgency);
       setTimeout(() => {
           setLoading(false)
           setProfileShow(true)
@@ -73,15 +89,15 @@ const AgencyForm = () => {
 
 
    return (
-    <>
+    <div className='w-full h-full bg-gray-100'>
     {isFormOpen && (
        <div>
-       <div className="inset-0 flex items-center justify-center bg-gray-100 z-40">
+       <div className="inset-0 z-40 flex items-center justify-center">
          <div className="w-full max-w-lg p-6 bg-white rounded-lg shadow-lg">
            {/* Back to home button */}
            <Link to="/"
              
-             className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+             className="absolute text-gray-500 top-4 right-4 hover:text-gray-700"
            >
              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                <path d="M18 6L6 18" />
@@ -92,12 +108,12 @@ const AgencyForm = () => {
            {/* Agency form page 1 */}
            {step ===1 && (
              <>
-             <div className='bg-teal-600/10 flex justify-center items-center flex-col' >
-           <h1 className='text-2xl font-semibold mb-6 text-indigo-700 '>Agency SignUP<span className='text-lg text-gray-500'>page {step}</span></h1>
+             <div className='flex flex-col items-center justify-center bg-teal-600/10' >
+           <h1 className='mb-6 text-2xl font-semibold text-indigo-700 '>Agency SignUP<span className='text-lg text-gray-500'>page {step}</span></h1>
            <input 
            type='text' 
            placeholder='Enter Company Name' 
-           className='block w-full p-3 mb-4 bg-indigo-50 text-gray-900 border border-indigo-300 rounded-lg'
+           className='block w-full p-3 mb-4 text-gray-900 border border-indigo-300 rounded-lg bg-indigo-50'
            value={name}
            onChange={(e) => setName(e.target.value)}
            required/>
@@ -105,7 +121,7 @@ const AgencyForm = () => {
            <input 
            type='text' 
            placeholder='Enter Company Email' 
-           className='block w-full p-3 mb-4 bg-indigo-50 text-gray-900 border border-indigo-300 rounded-lg' 
+           className='block w-full p-3 mb-4 text-gray-900 border border-indigo-300 rounded-lg bg-indigo-50' 
            value={email}
            onChange={(e) => setEmail(e.target.value)}
            required/> 
@@ -113,7 +129,7 @@ const AgencyForm = () => {
            <input 
            type='text' 
            placeholder='Enter Country' 
-           className='block w-full p-3 mb-4 bg-indigo-50 text-gray-900 border border-indigo-300 rounded-lg' 
+           className='block w-full p-3 mb-4 text-gray-900 border border-indigo-300 rounded-lg bg-indigo-50' 
            value={country}
            onChange={(e) => 
              setCountry(e.target.value)
@@ -124,31 +140,48 @@ const AgencyForm = () => {
            <input
              type="file"
              accept="image/*"
-             onChange={handleImageChange}
-             className="block w-full p-3 mb-4 bg-indigo-50 text-gray-900 border border-indigo-300 rounded-lg"
+             onChange={handleProfileImageChange}
+             className="block w-full p-3 mb-4 text-gray-900 border border-indigo-300 rounded-lg bg-indigo-50"
              
            />
            {profileImage && (
-             <div className="w-24 h-24 rounded-full overflow-hidden mx-auto mb-4">
+             <div className="w-24 h-24 mx-auto mb-4 overflow-hidden rounded-full">
                <img src={profileImage} alt="Profile Preview" className="object-cover w-full h-full" />
              </div>
            )}
-           <button onClick={handleNext} className="w-full py-3 px-4 bg-indigo-600 text-white rounded-lg">
+           <label className="block mb-4 text-gray-700">Upload Banner Image:</label>
+           <input
+             type="file"
+             accept="image/*"
+             onChange={handleBannerImageChange}
+             className="block w-full p-3 mb-4 text-gray-900 border border-indigo-300 rounded-lg bg-indigo-50"
+             
+           />
+           {bannerImage && (
+             <div className="w-40 h-24 mx-auto mb-4 overflow-hidden ">
+               <img src={bannerImage} style={{backgroundSize : 'cover'}} alt="Profile Preview" className="object-cover w-full h-full" />
+             </div>
+           )}
+           
+           
+           <button onClick={handleNext} className="w-full px-4 py-3 text-white bg-indigo-600 rounded-lg">
              Next
            </button>
+
+           <div className='relative flex justify-center w-full py-5 font-semibold px-auto '><p className='inline'>ALready Signup? {"->"} <Link className='text-teal-400' to="/Login" >Login</Link></p> </div>
            </div> </>
            )}
 
            {/* Agency form page 2 */}
 
            {step === 2 && (
-             <div className='bg-teal-600/10 flex justify-center items-center flex-col' >
-             <h1 className='text-2xl font-semibold mb-6 text-indigo-700 '>Agency SignUP<span className='text-lg text-gray-500'>page {step}</span></h1>
+             <div className='flex flex-col items-center justify-center bg-teal-600/10' >
+             <h1 className='mb-6 text-2xl font-semibold text-indigo-700 '>Agency SignUP<span className='text-lg text-gray-500'>page {step}</span></h1>
 
              <input 
              type='text' 
              placeholder='Enter Category' 
-             className='block w-full p-3 mb-4 bg-indigo-50 text-gray-900 border border-indigo-300 rounded-lg'
+             className='block w-full p-3 mb-4 text-gray-900 border border-indigo-300 rounded-lg bg-indigo-50'
              value={category}
              onChange={(e) => 
              setCategory(e.target.value)
@@ -158,7 +191,7 @@ const AgencyForm = () => {
              <input 
              type='text' 
              placeholder='Enter Registeration Number' 
-             className='block w-full p-3 mb-4 bg-indigo-50 text-gray-900 border border-indigo-300 rounded-lg' 
+             className='block w-full p-3 mb-4 text-gray-900 border border-indigo-300 rounded-lg bg-indigo-50' 
              value={reg}
              onChange={(e) => 
              setReg(e.target.value)
@@ -169,7 +202,7 @@ const AgencyForm = () => {
              <input 
              type='date' 
              placeholder='Enter Country' 
-             className='block w-full p-3 mb-4 bg-indigo-50 text-gray-900 border border-indigo-300 rounded-lg' 
+             className='block w-full p-3 mb-4 text-gray-900 border border-indigo-300 rounded-lg bg-indigo-50' 
              value={date}
              onChange={(e) => 
              setDate(e.target.value)
@@ -177,11 +210,11 @@ const AgencyForm = () => {
              required/>  
           
              
-             <div className='flex w-full justify-center items-center gap-4'>
-             <button onClick={handlePrev} className="flex-1 py-3 px-4  bg-gray-500 text-white rounded-lg">
+             <div className='flex items-center justify-center w-full gap-4'>
+             <button onClick={handlePrev} className="flex-1 px-4 py-3 text-white bg-gray-500 rounded-lg">
                Back
              </button>
-             <button onClick={handleNext} className="flex-1 py-3 px-4 bg-indigo-600 text-white rounded-lg">
+             <button onClick={handleNext} className="flex-1 px-4 py-3 text-white bg-indigo-600 rounded-lg">
                Next
              </button>
 
@@ -193,13 +226,13 @@ const AgencyForm = () => {
             {/* Agency form page 3 */}
 
            {step === 3 && (
-             <div className='bg-teal-600/10 flex justify-center items-center flex-col' >
-             <h1 className='text-2xl font-semibold mb-6 text-indigo-700 '>Agency SignUP <span className='text-lg text-gray-500'>page {step}</span></h1>
+             <div className='flex flex-col items-center justify-center bg-teal-600/10' >
+             <h1 className='mb-6 text-2xl font-semibold text-indigo-700 '>Agency SignUP <span className='text-lg text-gray-500'>page {step}</span></h1>
 
              <input 
              type='text' 
              placeholder='Your Website link ?' 
-             className='block w-full p-3 mb-4 bg-indigo-50 text-gray-900 border border-indigo-300 rounded-lg' 
+             className='block w-full p-3 mb-4 text-gray-900 border border-indigo-300 rounded-lg bg-indigo-50' 
              value={web}
              onChange={(e) => 
              setWeb(e.target.value)
@@ -209,7 +242,7 @@ const AgencyForm = () => {
              <input 
              type='text' 
              placeholder='Your Fb page link ? ' 
-             className='block w-full p-3 mb-4 bg-indigo-50 text-gray-900 border border-indigo-300 rounded-lg' 
+             className='block w-full p-3 mb-4 text-gray-900 border border-indigo-300 rounded-lg bg-indigo-50' 
              value={fb}
              onChange={(e) => 
              setFb(e.target.value)
@@ -219,7 +252,7 @@ const AgencyForm = () => {
              <input 
              type='text' 
              placeholder='Your Insta page link ? ' 
-             className='block w-full p-3 mb-4 bg-indigo-50 text-gray-900 border border-indigo-300 rounded-lg' 
+             className='block w-full p-3 mb-4 text-gray-900 border border-indigo-300 rounded-lg bg-indigo-50' 
              value={insta}
              onChange={(e) => 
              setInsta(e.target.value)
@@ -228,12 +261,12 @@ const AgencyForm = () => {
 
 
 
-             <div className='flex w-full justify-center items-center gap-4'>
+             <div className='flex items-center justify-center w-full gap-4'>
              
-             <button onClick={handlePrev} className="flex-1 py-3 px-4 bg-gray-500 hover:bg-gray-700 text-white rounded-lg">
+             <button onClick={handlePrev} className="flex-1 px-4 py-3 text-white bg-gray-500 rounded-lg hover:bg-gray-700">
                Back
              </button>
-             <button onClick={handleEntry} className="flex-1 py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg">
+             <button onClick={handleEntry} className="flex-1 px-4 py-3 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
                SignUp
              </button>
              
@@ -249,26 +282,25 @@ const AgencyForm = () => {
     )  }
 
     {loading && (
-      <Loading/>
+      <div className='w-full h-full '>
+        <Loading/>
+      </div>
     )}
 
-    {profileShow && (
+    {profileShow && ( 
       <>
       
-        <div className='w-full h-full bg-gray-400'>
+        <div className='w-full h-full '>
       
-          <div className='w-full h-full'>
-            {AgencyState[AgencyState.length - 1].Date}
-
-          </div>
-        
+          <AgencyNav profileImage={profileImage} Agency = {CurrAgency} />
+          <AgencyPage/>
         </div>
       
       </>
     )}
 
     
-    </>
+    </div>
    )
 }
 

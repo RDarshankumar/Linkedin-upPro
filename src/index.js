@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router } from "react-router-dom"
-import { GlobalProvider } from './Sami/Data/GlobalData';
+import AgencyStateProvider from '../src/Sami/Data/AgencyData/AgencyStateProvider'
 import './index.css';
 import App from './App';
 
@@ -11,9 +11,9 @@ root.render(
   
     <Router>
   <React.StrictMode>
-  {/* <GlobalProvider> */}
+  <AgencyStateProvider>
     <App />
-    {/* </GlobalProvider> */}
+    </AgencyStateProvider>
   </React.StrictMode>
   </Router>
   

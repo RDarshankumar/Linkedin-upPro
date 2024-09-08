@@ -5,18 +5,24 @@ const PostComponent = () => {
   const [searchPopup, setSearchPopup] = useState(false);
   const [imagePopup, setImagePopup] = useState(false);
   const [videoPopup, setVideoPopup] = useState(false);
-  const [articlePopup, setArticlePopup] = useState(false);
+  const [jobPopup, setJobPopup] = useState(false);
   const [posts, setPosts] = useState([]);
   const [selectedTab, setSelectedTab] = useState('all');
 
   const [textContent, setTextContent] = useState('');
+
   const [imageFile, setImageFile] = useState(null);
   const [imageDescription, setImageDescription] = useState('');
+
   const [videoFile, setVideoFile] = useState(null);
   const [videoDescription, setVideoDescription] = useState('');
-  const [articleImage, setArticleImage] = useState(null);
-  const [articleHeading, setArticleHeading] = useState('');
-  const [articleText, setArticleText] = useState('');
+
+  const [jobImage, setJobImage] = useState(null);
+  const [jobTitle , setJobTitle] = useState("");
+  const [jobDesc , setJobDesc] =useState("")
+  const [jobType , setJobType] = useState("")
+
+  
 
   const [commentText, setCommentText] = useState({}); // Store comments for each post
 
@@ -25,9 +31,8 @@ const PostComponent = () => {
     return () => {
       if (imageFile) URL.revokeObjectURL(URL.createObjectURL(imageFile));
       if (videoFile) URL.revokeObjectURL(URL.createObjectURL(videoFile));
-      if (articleImage) URL.revokeObjectURL(URL.createObjectURL(articleImage));
     };
-  }, [imageFile, videoFile, articleImage]);
+  }, [imageFile, videoFile, jobImage]);
 
   const handlePost = (type) => {
     let content;
@@ -52,12 +57,12 @@ const PostComponent = () => {
           </div>
         );
         break;
-      case 'article':
+      case 'job':
         content = (
           <div>
-            {articleImage && <img src={URL.createObjectURL(articleImage)} alt="Article" className="object-cover w-full h-48 mb-2" />}
-            <h3 className="mb-2 text-lg font-semibold">{articleHeading}</h3>
-            <p>{articleText}</p>
+            {jobImage && <img src={URL.createObjectURL(jobImage)} alt="Article" className="object-cover w-full h-48 mb-2" />}
+            <h3 className="mb-2 text-lg font-semibold">{jobTitle}</h3>
+            <p>{jobDesc}</p>
           </div>
         );
         break;
@@ -70,18 +75,19 @@ const PostComponent = () => {
   };
 
   const resetForm = () => {
+    setSearchPopup("")
     setTextContent('');
     setImageFile(null);
     setImageDescription('');
     setVideoFile(null);
     setVideoDescription('');
-    setArticleImage(null);
-    setArticleHeading('');
-    setArticleText('');
     setSearchPopup(false);
     setImagePopup(false);
     setVideoPopup(false);
-    setArticlePopup(false);
+    setJobPopup(false)
+    setJobTitle("");
+    setJobDesc("");
+
   };
 
   const handleDeletePost = (id) => {
@@ -161,11 +167,11 @@ const PostComponent = () => {
           </li>
           <li>
             <button
-              className={`w-full p-2 text-left rounded-md ${selectedTab === 'article' ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
-              onClick={() => setSelectedTab('article')}
+              className={`w-full p-2 text-left rounded-md ${selectedTab === 'job' ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
+              onClick={() => setSelectedTab('job')}
               aria-label="Article posts"
             >
-              Article Posts
+              Job Posts
             </button>
           </li>
         </ul>
@@ -221,10 +227,10 @@ const PostComponent = () => {
           </button>
           <button
             className="px-4 py-2 text-white bg-yellow-500 rounded-md hover:bg-yellow-600"
-            onClick={() => setArticlePopup(true)}
+            onClick={() => setJobPopup(true)}
             aria-label="Add article post"
           >
-            Article Post
+            Job Post
           </button>
         </div>
 
@@ -279,32 +285,26 @@ const PostComponent = () => {
         )}
 
         {/* Article Post Popup */}
-        {articlePopup && (
+        {jobPopup && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="w-11/12 max-w-lg p-6 bg-white rounded-lg shadow-lg">
               <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => setArticleImage(e.target.files[0])}
-                className="mb-4"
-              />
-              <input
                 type="text"
-                placeholder="Article heading..."
-                value={articleHeading}
-                onChange={(e) => setArticleHeading(e.target.value)}
+                placeholder="Job title"
+                value={jobTitle}
+                onChange={(e) => setJobTitle(e.target.value)}
                 className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
               />
               <textarea
-                placeholder="Article text..."
-                value={articleText}
-                onChange={(e) => setArticleText(e.target.value)}
+                placeholder="Job Description"
+                value={jobDesc}
+                onChange={(e) => setJobDesc(e.target.value)}
                 className="w-full p-3 mb-4 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring focus:border-blue-300"
                 rows="4"
               ></textarea>
               <div className="flex justify-between">
                 <button className="px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600" onClick={() => resetForm()}>Cancel</button>
-                <button className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600" onClick={() => handlePost('article')}>Post</button>
+                <button className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600" onClick={() => handlePost('job')}>Post</button>
               </div>
             </div>
           </div>
