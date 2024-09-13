@@ -3,7 +3,7 @@ import Logo from '../Logo/Dk.png';
 import './Nav.css';
 import LinkUp from '../Logo/LinkupPng.png'
 
-const Navbar = ({ profileImage }) => {
+const Navbar = ({ profileImage,education,personal,experience,certification }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const profileRef = useRef(null);
 
@@ -31,60 +31,92 @@ const Navbar = ({ profileImage }) => {
     if (profileWindow) {
       profileWindow.document.write(`
         <html>
-        <head>
-          <title>Your Profile</title>
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              text-align: center;
-              margin: 0;
-              padding: 0;
-              background-color: #f4f4f4;
-            }
-            .banner {
-              background-color: #4a90e2;
-              color: white;
-              padding: 50px;
-            }
-            .profile-img {
-              margin-top: -50px;
-              width: 150px;
-              height: 150px;
-              border-radius: 50%;
-              border: 5px solid white;
-              object-fit: cover;
-            }
-            .profile-info {
-              margin-top: 20px;
-            }
-            .back-button {
-              position: fixed;
-              top: 20px;
-              left: 20px;
-              background-color: #4a90e2;
-              color: white;
-              border: none;
-              padding: 10px 20px;
-              border-radius: 5px;
-              cursor: pointer;
-            }
-            .back-button:hover {
-              background-color: #357abd;
-            }
-          </style>
-        </head>
-        <body>
-          <button class="back-button" onclick="window.history.back()">Go Back</button>
-          <div class="banner">
-            <h1>Welcome to Your Profile</h1>
+      <head>
+        <title>Your Profile</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+          }
+          .banner {
+            background-color: #4a90e2;
+            color: white;
+            padding: 50px;
+          }
+          .profile-img {
+            margin-top: -50px;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid white;
+            object-fit: cover;
+          }
+          .profile-info {
+            margin-top: 20px;
+          }
+          .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+          }
+          .back-button:hover {
+            background-color: #357abd;
+          }
+          .card {
+            width: 300px;
+            height: 200px;
+            padding: 20px;
+            margin: 20px auto;
+            background-color: white; 
+            border: 2px solid #3498db; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.15); 
+            background-image: linear-gradient(to right, #ffffff, #e6f7ff);
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+          }
+        </style>
+      </head>
+      <body>
+        <button class="back-button" onclick="window.history.back()">Go Back</button>
+        <div class="banner">
+          <h1>Welcome to Your Profile</h1>
+        </div>
+        <img src="${profileImage}" alt="Profile Image" class="profile-img" />
+        <div class="profile-info">
+          <div class="card">
+            <h2>Name: ${personal.name}</h2>
+            <h2>Email: ${personal.email}</h2>
+            <h2>Phone: ${personal.phone}</h2>
           </div>
-          <img src="${profileImage}" alt="Profile Image" class="profile-img" />
-          <div class="profile-info">
-            <h2>User Name</h2>
-            <p>Some user information goes here...</p>
+          <div class="card">
+            <h3>University Name: ${education.school}</h3>
+            <h3>Degree: ${education.degree}</h3>
+            <h3>Percentage/Cgpa: ${education.cgpa}</h3>
           </div>
-        </body>
-        </html>
+          <div class="card">
+            <h3>Company: ${experience.company}</h3>
+            <h3>Years: ${experience.years}</h3>
+            <h3>Start Date: ${experience.startDate}</h3>
+            <h3>End Date: ${experience.endDate}</h3>
+          </div>
+          <div class="card">
+            <h3>Certification Institute: ${certification.institute}</h3>
+            <h3>Start Date: ${certification.startDate}</h3>
+            <h3>End Date: ${certification.endDate}</h3>
+          </div>
+        </div>
+      </body>
+      </html>
       `);
       profileWindow.document.close();
     }
@@ -106,31 +138,10 @@ const Navbar = ({ profileImage }) => {
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
                 {/* Navigation Links */}
-                <a
-                  href="#"
-                  className="px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-md"
-                  aria-current="page"
-                >
-                  Dashboard
-                </a>
-                <a
-                  href="#"
-                  className="px-3 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white"
-                >
-                  Team
-                </a>
-                <a
-                  href="#"
-                  className="px-3 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white"
-                >
-                  Projects
-                </a>
-                <a
-                  href="#"
-                  className="px-3 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white"
-                >
-                  Calendar
-                </a>
+              
+               
+               
+               
               </div>
             </div>
           </div>
