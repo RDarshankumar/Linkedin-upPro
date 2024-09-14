@@ -1,7 +1,19 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useContext } from 'react';
+import AgencyContext from './Data/AgencyData/AgencyContext'
 
 const PostComponent = () => {
+
+  const { CurrAgency , AgencyState , setAgencyState, setCurrAgency} = useContext(AgencyContext);
+  const [NewPost , setNewPost] = useState(null);
+  const [CurrIndex , setCurrIndex] = useState(null)
+  
+  useEffect(() => {
+    const index = AgencyState.findIndex(obj =>  obj.id === CurrAgency.id);
+    setCurrIndex(index);
+ }, [CurrAgency]) ;
+
+
   const [searchPopup, setSearchPopup] = useState(false);
   const [imagePopup, setImagePopup] = useState(false);
   const [videoPopup, setVideoPopup] = useState(false);
@@ -21,8 +33,6 @@ const PostComponent = () => {
   const [jobTitle , setJobTitle] = useState("");
   const [jobDesc , setJobDesc] =useState("")
   const [jobType , setJobType] = useState("")
-
-  
 
   const [commentText, setCommentText] = useState({}); // Store comments for each post
 
@@ -69,6 +79,8 @@ const PostComponent = () => {
       default:
         content = '';
     }
+
+    setNewPost({ type, content, id: Date.now(), likes: 0, comments: [] })
 
     setPosts([...posts, { type, content, id: Date.now(), likes: 0, comments: [] }]);
     resetForm();
@@ -131,6 +143,18 @@ const PostComponent = () => {
     "Remote Work and Digital Nomadism",
     // ... other topics
   ];
+
+    useEffect(() => {
+      setCurrAgency(prevState => ({
+      ...prevState,
+        posts: posts,
+    }));
+      console.log("Posts total now ", CurrAgency.posts  );
+      AgencyState[CurrIndex] = CurrAgency;
+      console.log("current agency jo main hai uski posts",AgencyState[CurrIndex].posts)
+
+    }, [posts]);
+
 
   return (
     <div className="flex flex-col min-h-screen lg:flex-row">

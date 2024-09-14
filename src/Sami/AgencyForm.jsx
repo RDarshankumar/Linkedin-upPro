@@ -7,17 +7,15 @@ import AgencyContext from './Data/AgencyData/AgencyContext'
 
 const AgencyForm = () => {
 
-    const {AgencyState , CurrAgency , setAgencyState, setCurrAgency} = useContext(AgencyContext);
+    const {AgencyState , CurrAgency , setAgencyState, setCurrAgency ,profileShow, setProfileShow} = useContext(AgencyContext);
 
-    useEffect(()=> {
-      console.log("object" , AgencyState)
-    }, [AgencyState])
 
 
     const [name , setName] = useState("")
     const [email , setEmail] = useState("")
     const [category , setCategory] = useState("")
     const [country , setCountry] = useState("")
+    const [password , setPassword] = useState("")
     const [reg , setReg] = useState("")
     const [date , setDate] = useState("")
     const [web , setWeb] = useState("")
@@ -27,8 +25,10 @@ const AgencyForm = () => {
     const [bannerImage , setBannerImage] = useState(null)
     const [step , setStep] = useState(1)
     const [loading , setLoading ] = useState(false)
+
     const [isFormOpen , setFormOpen] = useState(true)
-    const [profileShow , setProfileShow] = useState(false)
+
+    const [formfilled , setFormfilled] = useState(true)
 
     
 
@@ -38,22 +38,34 @@ const AgencyForm = () => {
     const handlePrev = () => setStep((prevStep) => prevStep - 1);
 
     const handleProfileImageChange = (e) => {
-          console.log(e.target.files)
+
         const file = e.target.files[0];
         if (file) {
           setProfileImage(URL.createObjectURL(file));
         }
-        console.log(profileImage)
+
     }
 
     const handleBannerImageChange = (e) => {
-      console.log(e.target.files)
+
     const file = e.target.files[0];
     if (file) {
       setBannerImage(URL.createObjectURL(file));
     }
-    console.log(profileImage)
+
 }
+
+    const handleFormfilled = () => {
+
+        if(name !== "" && email !== "" && password !== "" && category !== "" && country !== "" && date !== "" && reg !== "" && web !== "" ){
+          handleEntry()
+
+        }
+
+        else{
+          setFormfilled(false)
+        }
+    }
 
     const handleEntry = () => {
 
@@ -64,6 +76,7 @@ const AgencyForm = () => {
         id : AgencyState.length + 1,
         Name : name ,
         Email : email,
+        Password : password ,
         Category : category,
         Countary : country,
         Date : date,
@@ -73,11 +86,11 @@ const AgencyForm = () => {
         Insta : insta ,
         Pic : profileImage,
         Banner : bannerImage,
+        posts : ["hello"],
       }
 
-      AgencyState.push(newAgency)
+      setAgencyState([...AgencyState , newAgency]);
 
-      console.log(AgencyState[AgencyState.length - 1]);
 
       setCurrAgency(newAgency);
       setTimeout(() => {
@@ -89,11 +102,11 @@ const AgencyForm = () => {
 
 
    return (
-    <div className='w-full h-full bg-gray-100'>
+    <div className=''>
     {isFormOpen && (
-       <div>
-       <div className="inset-0 z-40 flex items-center justify-center">
-         <div className="w-full max-w-lg p-6 bg-white rounded-lg shadow-lg">
+
+       <div className="flex items-center justify-center w-full h-full px-8 bg-gray-100 md:px-16 py-28">
+         <div className="w-full p-6 bg-white rounded-lg shadow-lg">
            {/* Back to home button */}
            <Link to="/"
              
@@ -108,7 +121,7 @@ const AgencyForm = () => {
            {/* Agency form page 1 */}
            {step ===1 && (
              <>
-             <div className='flex flex-col items-center justify-center bg-teal-600/10' >
+             <div className='flex flex-col items-center justify-center w-full ' >
            <h1 className='mb-6 text-2xl font-semibold text-indigo-700 '>Agency SignUP<span className='text-lg text-gray-500'>page {step}</span></h1>
            <input 
            type='text' 
@@ -126,15 +139,17 @@ const AgencyForm = () => {
            onChange={(e) => setEmail(e.target.value)}
            required/> 
 
+            
+
            <input 
            type='text' 
-           placeholder='Enter Country' 
+           placeholder='Enter Your Password' 
            className='block w-full p-3 mb-4 text-gray-900 border border-indigo-300 rounded-lg bg-indigo-50' 
-           value={country}
+           value={password}
            onChange={(e) => 
-             setCountry(e.target.value)
+             setPassword(e.target.value)
            }
-           required/>  
+           required/>
         
            <label className="block mb-4 text-gray-700">Upload Profile Image:</label>
            <input
@@ -177,6 +192,16 @@ const AgencyForm = () => {
            {step === 2 && (
              <div className='flex flex-col items-center justify-center bg-teal-600/10' >
              <h1 className='mb-6 text-2xl font-semibold text-indigo-700 '>Agency SignUP<span className='text-lg text-gray-500'>page {step}</span></h1>
+
+             <input 
+           type='text' 
+           placeholder='Enter Country' 
+           className='block w-full p-3 mb-4 text-gray-900 border border-indigo-300 rounded-lg bg-indigo-50' 
+           value={country}
+           onChange={(e) => 
+             setCountry(e.target.value)
+           }
+           required/> 
 
              <input 
              type='text' 
@@ -261,28 +286,27 @@ const AgencyForm = () => {
 
 
 
-             <div className='flex items-center justify-center w-full gap-4'>
+             <div className='flex items-center justify-center w-full gap-4 my-4'>
              
-             <button onClick={handlePrev} className="flex-1 px-4 py-3 text-white bg-gray-500 rounded-lg hover:bg-gray-700">
-               Back
-             </button>
-             <button onClick={handleEntry} className="flex-1 px-4 py-3 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
-               SignUp
-             </button>
-             
-             
+                <button onClick={handlePrev} className="flex-1 px-4 py-3 text-white bg-gray-500 rounded-lg hover:bg-gray-700">
+                  Back
+                </button>
+                <button onClick={handleFormfilled} className="flex-1 px-4 py-3 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
+                  SignUp
+                </button>
              </div>
+
+             {!formfilled && <p className='text-xl font-semibold text-red-600'>Please fill all input fields</p>}
              </div> 
            )}
 
            
             </div>
           </div>
-        </div>
     )  }
 
     {loading && (
-      <div className='w-full h-full '>
+      <div className='w-full h-full bg-gray-100'>
         <Loading/>
       </div>
     )}
@@ -293,7 +317,7 @@ const AgencyForm = () => {
         <div className='w-full h-full '>
       
           <AgencyNav profileImage={profileImage} Agency = {CurrAgency} />
-          <AgencyPage/>
+          <AgencyPage savedosts = {CurrAgency.posts}/>
         </div>
       
       </>

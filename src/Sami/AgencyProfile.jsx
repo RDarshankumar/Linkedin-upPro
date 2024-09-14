@@ -1,6 +1,7 @@
 import React , {useContext} from 'react'
 import { useLocation } from 'react-router-dom';
 import AgencyContext from './Data/AgencyData/AgencyContext'
+import { Link } from 'react-router-dom';
 
 const AgencyProfile = () => {
   
@@ -32,6 +33,7 @@ const AgencyProfile = () => {
           <p className='text-xl text-zinc-800'>{CurrAgency.Category}</p>
         </div>
 
+        <Link to="/Agency" className='absolute px-2 py-1 bg-blue-600 cursor-pointer bottom-20 right-16 text-teal-50'>Go Back</Link>
         <span className='absolute px-2 py-1 bg-blue-600 cursor-pointer bottom-20 right-16 text-teal-50'>Edit Profile</span>
       </div>
 
