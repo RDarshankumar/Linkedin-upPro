@@ -8,7 +8,7 @@ import AgencyContext from './Data/AgencyData/AgencyContext'
 
 const AgencyNav = ( {profileImage } ) => {
 
-  const {AgencyState , CurrAgency , setAgencyState, setCurrAgency} = useContext(AgencyContext);
+  const {AgencyState , CurrAgency , setAgencyState, setCurrAgency , setProfileShow} = useContext(AgencyContext);
 
   
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -22,7 +22,6 @@ const AgencyNav = ( {profileImage } ) => {
       setCurrAgency(AgencyState[AgencyState.length -1])
   }
   
-  console.log("curr agency hai yai " , CurrAgency)
   const toggleProfileMenu = () => {
     setIsProfileOpen(!isProfileOpen);
   };
@@ -50,13 +49,19 @@ const AgencyNav = ( {profileImage } ) => {
       <div className="px-2 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between h-16 ">
           <div className="flex items-center justify-center flex-1 sm:items-stretch sm:justify-start">
-            <div className="flex items-center flex-shrink-0">
-              <img
-                className="w-auto h-auto"
+            <div className="flex items-center w-48 h-28"
+            style={{
+              backgroundImage: `url(${LinkUp})`, // Wrap the Blob URL with url()
+              backgroundSize: 'cover',
+              backgroundPosition: 'left',
+            }}
+            >
+              {/* <img
+                className="object-contain w-full h-full aspect-video"
                 src={LinkUp}
                 alt="Your Company"
                 id='logo'
-              />
+              /> */}
             </div>
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
@@ -165,6 +170,7 @@ const AgencyNav = ( {profileImage } ) => {
                     role="menuitem"
                     tabIndex="-1"
                     id="user-menu-item-2"
+                    onClick={() => setProfileShow(false)}
                   >
                     Sign out
                   </Link>
